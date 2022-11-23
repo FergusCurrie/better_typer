@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { render } from 'react-dom';
 import { ChakraProvider } from "@chakra-ui/react";
 import { Textarea } from '@chakra-ui/react'
 import { Text } from '@chakra-ui/react'
 import Header from "./components/Header";
-import { Button, ButtonGroup } from '@chakra-ui/react'
+import { Button, ButtonGroup} from '@chakra-ui/react'
+import theme from "./theme";
+import { ColorModeScript } from '@chakra-ui/react'
+import { Box } from "@chakra-ui/react"
 
 
 function App() {
@@ -12,7 +15,7 @@ function App() {
   const doClear = () =>{
     set_typed_text('')
     // curr_text = "yy"
-  }
+  } // curr_text = "yy"
 
   // Dealing with text area.
   // React.useState('') makes a stateful variable value, updated by setValue(X)
@@ -40,7 +43,8 @@ function App() {
   }
 
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
+    
       <Header />
       <Text as="span" fontSize='5xl' color='red'>{highlighted_text}</Text>
       <Text as="span" fontSize='5xl'>{un_highlighted_text}</Text>
@@ -50,7 +54,7 @@ function App() {
         onChange={handleInputChange}
         placeholder='Type here' 
       />
-      
+    
     </ChakraProvider>
   )
 }
