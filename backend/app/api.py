@@ -4,7 +4,7 @@ Routing through fast api
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+import uuid
 
 app = FastAPI()
 
@@ -23,3 +23,18 @@ app.add_middleware(
 @app.get("/", tags=["root"])
 async def read_root() -> dict:
     return {"message": "Welcome to your todo list."}
+
+
+@app.get("/query", tags=["query"])
+async def query() -> dict:
+    return {
+        "target_text": "The quick brown fox jumped over the lazy dog.",
+        "uuid": str(uuid.uuid1()),
+    }
+
+
+@app.post("/log", tags=["log"])
+async def log(todo: dict) -> dict:
+    # todos.append(todo)
+    print(todo)
+    return {"data": {"Todo added."}}
