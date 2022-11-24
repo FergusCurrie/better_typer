@@ -5,13 +5,19 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { Textarea } from '@chakra-ui/react'
 import { Text } from '@chakra-ui/react'
 import Header from "./components/Header";
-import QueryAPI from "./components/QueryAPI";
 import { Button, ButtonGroup} from '@chakra-ui/react'
 import theme from "./theme";
 import { ColorModeScript } from '@chakra-ui/react'
 import { Box } from "@chakra-ui/react"
 import { Center, Square, Circle } from '@chakra-ui/react'
 
+function get_date_time() {
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var dateTime = date+' '+time;
+  return dateTime
+}
 
 function App() {
 
@@ -37,11 +43,7 @@ function App() {
     set_uuid(data.uuid)
   }
 
-  const putLog = async (inputValue) => {
-    let log = {
-      "uuid" : uuid,
-      "input" : inputValue
-    }
+  const putLog = async (log) => {
     fetch("http://localhost:8000/log", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -61,11 +63,21 @@ function App() {
 
   // handler for updates to Textarea. Notice in chakra the onChange listener. 
   let handleInputChange = (e) => {
+    // Read input value 
     let inputValue = e.target.value
-    putLog(inputValue)
-    set_typed_text(inputValue)
 
-    // inputValue equal to target_text up to what index?
+    // Blob logs into json and send to backend 
+    let logs = {
+      "uuid" : uuid,
+      "input" : inputValue,
+      "time" : get_date_time(),
+      "test":"1"
+    }
+    putLog(logs)
+
+
+    // Deal with UI
+    set_typed_text(inputValue)
     let last_index_correct = -1
     for (let i = 0; i < inputValue.length; i++){
       if (inputValue[i] != target_text[i]){
@@ -77,7 +89,7 @@ function App() {
     set_correct_text(inputValue.slice(0, last_index_correct+1))
     set_incorrect_text(target_text.slice(last_index_correct+1, inputValue.length))
     set_current_letter(target_text.slice(inputValue.length, inputValue.length+1))
-    set_remaining_text(target_text.slice(inputValue.length+1, target_text.length)) // 1 for indexing in js 2 for curent letter 
+    set_remaining_text(target_text.slice(inputValue.length+1, target_text.length)) 
   }
 
 

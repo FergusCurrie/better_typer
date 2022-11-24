@@ -1,6 +1,6 @@
 import sqlite3
 
-DB = "../../db"
+DB = "../db"
 
 
 def query_db(query):
@@ -39,16 +39,10 @@ def add_record(array):
 def create_table():
     query = """
         create table logs(
-            uuid text primary key,
+            uuid type text,
             input type text,
             datetime type text,
             test type text
         );
     """
     query_db(query)
-
-
-add_record(["34823348", "thecowwentto", "1700", "1"])
-x = get_records()
-print(x)
-# create_table()

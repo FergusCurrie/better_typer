@@ -5,6 +5,7 @@ Routing through fast api
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uuid
+from app.db_connector import add_record
 
 app = FastAPI()
 
@@ -34,7 +35,15 @@ async def query() -> dict:
 
 
 @app.post("/log", tags=["log"])
-async def log(todo: dict) -> dict:
+async def log(logs: dict) -> dict:
+    """
+    add_record(["34823348", "thecowwentto", "1700", "1"])
+    x = get_records()
+    print(x)
+    # create_table()
+    """
+
     # todos.append(todo)
-    print(todo)
+    add_record([logs["uuid"], logs["input"], logs["time"], logs["test"]])
+    print(logs)
     return {"data": {"Todo added."}}
